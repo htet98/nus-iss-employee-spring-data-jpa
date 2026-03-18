@@ -1,14 +1,19 @@
 package sg.edu.nus.spring_data_jpa.model;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -42,6 +47,20 @@ public class Employee {
 		this.department = department;
 	}
 
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "department_id", referencedColumnName = "id")
+	private Department department;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+//    private Profile profile;  // Reference to the Profile entity
+
+//	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+//	@JoinTable(name = "employee_projects", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "_id"))
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "employee_projects", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "project_id"))
+	private Set<Project> projects = new HashSet<>();
+
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", name=" + name + "]";
@@ -73,8 +92,6 @@ public class Employee {
 		this.name = name;
 		System.out.println(name);
 	}
-	
-	
 
 	public Employee(String name, Department department) {
 		super();
@@ -82,12 +99,11 @@ public class Employee {
 		this.department = department;
 	}
 
+	public Set<Project> getProjects() {
+		return projects;
+	}
 
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "department_id", referencedColumnName = "id")
-	private Department department;
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "profile_id", referencedColumnName = "id")
-//    private Profile profile;  // Reference to the Profile entity
+	public void setProjects(Set<Project> projects) {
+		this.projects = projects;
+	}
 }

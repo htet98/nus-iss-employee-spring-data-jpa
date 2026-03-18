@@ -16,17 +16,22 @@ import jakarta.persistence.Table;
 @Table(name = "projects")
 public class Project {
 
+	@Override
+	public String toString() {
+		return "Project [id=" + id + ", name=" + name + ", description=" + description + ", startDate=" + startDate
+				+ ", endDate=" + endDate + ", employees=" + employees + "]";
+	}
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String name;
-	private String description;
-	private LocalDate startDate;
-	private LocalDate endDate;
-	
-	@ManyToMany(mappedBy = "projects",
-			fetch = FetchType.LAZY)
-	private Set<Employee> employee = new HashSet<>();
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String description;
+    private LocalDate startDate;
+    private LocalDate endDate;
+
+    @ManyToMany(mappedBy = "projects", fetch = FetchType.LAZY)
+    private Set<Employee> employees = new HashSet<>();
 
 	public Long getId() {
 		return id;
@@ -69,11 +74,11 @@ public class Project {
 	}
 
 	public Set<Employee> getEmployee() {
-		return employee;
+		return employees;
 	}
 
 	public void setEmployee(Set<Employee> employee) {
-		this.employee = employee;
+		this.employees = employee;
 	}
 
 	public Project(Long id, String name, String description, LocalDate startDate, LocalDate endDate) {

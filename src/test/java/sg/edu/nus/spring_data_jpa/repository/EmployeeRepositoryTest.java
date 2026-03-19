@@ -168,7 +168,17 @@ public class EmployeeRepositoryTest {
 		assertThat(c4.isPresent());
 	}
 
-
+//	2. ProjectRepository
+//	• Find by exact project name.
+//	@Test
+//	@DisplayName("Find by exact project name")
+//	void findByExactProjectName() {
+//		String searchtext = "Project-Z"; 
+//		Project c4 = projRepo.findByName("Project-Z");
+//		System.out.println(c4.getName());
+//		System.out.println(c4);
+//		assertThat(c4.getName().equals("Project-Z"));
+//	}
 //	3. DepartmentRepository
 //	• Find by exact name.
 //	@Test

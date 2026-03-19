@@ -1,6 +1,8 @@
 package sg.edu.nus.spring_data_jpa.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -47,19 +50,74 @@ public class Employee {
 		this.department = department;
 	}
 
+	public Set<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(Set<Project> projects) {
+		this.projects = projects;
+	}
+
+	public List<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<Course> courses) {
+		System.out.println("employee setCourse");
+		this.courses = courses;
+	}
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "department_id", referencedColumnName = "id")
 	private Department department;
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "profile_id", referencedColumnName = "id")
-//    private Profile profile;  // Reference to the Profile entity
-
-//	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-//	@JoinTable(name = "employee_projects", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "_id"))
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "employee_projects", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "project_id"))
 	private Set<Project> projects = new HashSet<>();
+
+//	public void addProject(Project p) {
+//		if (p != null) {
+//			if (projects == null) {
+//				projects = new HashSet<>();
+//				// projects = new ArrayList<>();
+//			}
+//			projects.add(p);
+//			p.setEmployees(this);
+//		}
+//	}
+
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<Course> courses;
+
+	public void addCourse(Course c) {
+		System.out.println(c);
+		if (c != null) {
+			System.out.println(c);
+			if (courses == null) {
+//  			courses = new HashSet<>();
+				courses = new ArrayList<>();
+			}
+		}
+		courses.add(c);
+		System.out.println(c);
+		c.setEmployee(this);
+	}
+
+	// Helper method to keep both sides of the relationship in sync
+//	public void addCourse(Course c) {
+//		System.out.println("add course");
+//		System.out.println(c);
+//		if (c != null) {
+//			System.out.println(c);
+//			if (courses == null) {
+////  			courses = new HashSet<>();
+//				courses = new ArrayList<>();
+//			}
+//			courses.add(c);
+//			System.out.println(courses);
+//			c.setEmployee(this);
+//		}
+//	}
 
 	@Override
 	public String toString() {
@@ -90,7 +148,6 @@ public class Employee {
 	public Employee(String name) {
 		super();
 		this.name = name;
-		System.out.println(name);
 	}
 
 	public Employee(String name, Department department) {
@@ -99,11 +156,4 @@ public class Employee {
 		this.department = department;
 	}
 
-	public Set<Project> getProjects() {
-		return projects;
-	}
-
-	public void setProjects(Set<Project> projects) {
-		this.projects = projects;
-	}
 }

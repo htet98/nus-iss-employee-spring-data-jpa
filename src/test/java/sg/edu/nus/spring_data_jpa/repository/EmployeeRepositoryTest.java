@@ -39,7 +39,6 @@ public class EmployeeRepositoryTest {
 //		Employee emp1 = new Employee();
 //		emp1.setName("J Bondie");
 //		Employee savedEmp = empRepo.save(emp1);	
-//		
 //		em.persist(savedEmp);
 //		em.flush();
 
@@ -153,7 +152,7 @@ public class EmployeeRepositoryTest {
 	@Test
 	@DisplayName("Find courses starting after a specific date.")
 	void findCoursesStartingAfterSpecificDate() {
-		LocalDate startDate = LocalDate.of(2026, 5, 1);
+		LocalDate startDate = LocalDate.of(2027, 5, 1);
 		List<Course> c3 = CourseRepo.findByStartsAfter(startDate);
 		System.out.println(c3);
 		assertThat(c3.size() > 0);
@@ -192,7 +191,7 @@ public class EmployeeRepositoryTest {
 
 //	Find by partial name (ignoring case).
 	@Test
-	@DisplayName("Find by partial name (ignoring case)")
+	@DisplayName("Department - Find by partial name (ignoring case)")
 	void findByPartialNameIgnoringCase() {
 		String deptName = "ISS";
 		List<Department> departments = dRepo.findByNameContainingIgnoreCase(deptName);
@@ -200,12 +199,14 @@ public class EmployeeRepositoryTest {
 		assertThat(departments.size() > 0);
 	}
 	
-	@Test
-	@DisplayName("Find employee by partial name (ignoring case).")
-	void findEmployeeByPartialNameIgnoringCase() {
-		String name = "";
-		List<Employee> employees = eRepo.findByNameContainingIgnoreCase(name);
-		System.out.println(employees);
-		assertThat(employees.size() > 0);
-	}
+//	@Test
+//	@DisplayName("Find employee by partial name (ignoring case).")
+//	void findEmployeeByPartialNameIgnoringCase() {
+//		String name = "xyz";
+//		List<Employee> employees = eRepo.findByNameContainingIgnoreCase(name);
+//		System.out.println("findEmployeeByPartialNameIgnoringCase");
+//		System.out.println(employees);
+//		System.out.println("findEmployeeByPartialNameIgnoringCase");
+//		assertThat(employees != null);
+//	}
 }

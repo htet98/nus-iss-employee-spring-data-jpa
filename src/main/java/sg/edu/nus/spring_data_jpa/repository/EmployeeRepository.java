@@ -23,11 +23,15 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	
 	
 //	• Custom @Query: Fetch an Employee and their Projects by Employee ID (findByIdWithProjects).
-//	@Query("SELECT e, e. FROM Employee e LEFT JOIN FETCH e.projects WHERE e.id = :id")
+//	@Query("SELECT e FROM Employee e LEFT JOIN FETCH e.projects WHERE e.id = :id")
 //	Optional<Employee> findByIdWithProjects(@Param("id") Long id);
+	@Query("SELECT DISTINCT e FROM Employee e LEFT JOIN FETCH e.projects WHERE e.id = :id")
+	Optional<Employee> findByIdWithProjects(@Param("id") Long id);
+	
 	
 //	• Find employees by a projectId.
 	
 //	• Custom @Query: Fetch an Employee and their Courses by Employee ID (findByIdWithCourses).
-//
+	@Query("SELECT DISTINCT e FROM Employee e LEFT JOIN FETCH e.courses WHERE e.id = :id")
+	Optional<Employee> findByIdWithCourses(@Param("id") Long id);
 }

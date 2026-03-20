@@ -75,19 +75,19 @@ public class Employee {
 	@JoinTable(name = "employee_projects", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "project_id"))
 	private Set<Project> projects = new HashSet<>();
 
-//	public void addProject(Project p) {
-//		if (p != null) {
-//			if (projects == null) {
-//				projects = new HashSet<>();
-//				// projects = new ArrayList<>();
-//			}
-//			projects.add(p);
-//			p.setEmployees(this);
-//		}
-//	}
+	public void addProjects(Project p) {
+		if (p != null) {
+			if (projects == null) {
+				projects = new HashSet<>();
+				// projects = new ArrayList<>();
+			}
+			projects.add(p);
+			p.setEmployees(Set.of(this));
+		}
+	}
 
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-	private List<Course> courses;
+	private List<Course> courses = new ArrayList<>();
 
 	public void addCourse(Course c) {
 		System.out.println(c);

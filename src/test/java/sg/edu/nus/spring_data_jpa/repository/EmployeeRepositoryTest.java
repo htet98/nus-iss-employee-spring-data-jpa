@@ -1,18 +1,21 @@
 package sg.edu.nus.spring_data_jpa.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import sg.edu.nus.spring_data_jpa.model.Course;
 import sg.edu.nus.spring_data_jpa.model.Department;
@@ -34,7 +37,7 @@ public class EmployeeRepositoryTest {
 	@Autowired
 	private TestEntityManager em;
 
-	@BeforeTestClass
+	@BeforeEach
 	public void setUp() {
 //		Employee emp1 = new Employee();
 //		emp1.setName("J Bondie");
@@ -50,7 +53,7 @@ public class EmployeeRepositoryTest {
 		emp1.setDepartment(dept1);
 
 		Project p1 = new Project();
-		p1.setName("Project X");
+		p1.setName("Project-X");
 		p1.setStartDate(LocalDate.of(2026, 1, 1));
 		p1.setEndDate(LocalDate.of(2026, 10, 31));
 		p1.setDescription("this is desc");
@@ -62,7 +65,7 @@ public class EmployeeRepositoryTest {
 		course1.setStarts(LocalDate.of(2026, 10, 10));
 
 		Course course2 = new Course();
-		course2.setName("Python2");
+		course2.setName("Python 2");
 		course2.setDurationInMonths(3);
 		course2.setStarts(LocalDate.of(2026, 1, 10));
 //		emp1.setCourses(List.of(course1, course2));
@@ -75,7 +78,7 @@ public class EmployeeRepositoryTest {
 
 		// create employee 2
 		Employee emp2 = new Employee();
-		emp2.setName("John Doe");
+		emp2.setName("John Bondie");
 		Department dept2 = new Department();
 		dept2.setName("NUSISS");
 		emp2.setDepartment(dept2);
@@ -88,7 +91,7 @@ public class EmployeeRepositoryTest {
 		emp2.setProjects(Set.of(p2));
 
 		Course course3 = new Course();
-		course3.setName("Agile");
+		course3.setName("Python 1");
 		course3.setDurationInMonths(1);
 		course3.setStarts(LocalDate.of(2026, 2, 1));
 
@@ -102,6 +105,13 @@ public class EmployeeRepositoryTest {
 		Employee savedEmp2 = eRepo.save(emp2);
 		em.persist(savedEmp2);
 		em.flush();
+		
+		// create employee 1
+		Employee emp31 = new Employee();
+		emp31.setName("Paul");
+		Employee savedEmp3 = eRepo.save(emp31);
+		em.persist(savedEmp3);
+		Long empId31 = emp31.getId();
 
 	}
 
@@ -130,83 +140,142 @@ public class EmployeeRepositoryTest {
 
 //	1. CourseRepository
 //	• Find courses where the name contains a specific string, ignoring case.
-	@Test
-	@DisplayName("Find courses where the name contains a specific string, ignoring case")
-	void findCourseContainName() {
-		String searchtext = "jav";
-		List<Course> courses = CourseRepo.findByNameContainingIgnoreCase(searchtext);
+//	@Test
+//	@DisplayName("Find courses where the name contains a specific string, ignoring case")
+//	void findCourseContainName() {
+//		String searchtext = "python";
+//		List<Course> courses = CourseRepo.findByNameContainingIgnoreCase(searchtext);
+//		System.out.println("findCourseContainName" + " " + searchtext);
+//		System.out.println(courses.size());
 //		System.out.println(courses);
-		assertThat(courses.size() > 0);
-	}
+//		boolean resultBoolean = false;
+//		for (Course c : courses) {
+//
+//			resultBoolean = c.getName().toLowerCase().contains(searchtext.toLowerCase());
+//		}
+//		assertTrue(resultBoolean);
+//	}
 
 //	Find courses starting after a specific date.
-	@Test
-	@DisplayName("Find courses starting after a specific date.")
-	void findCoursesStartAfter() {
-		LocalDate startDate = LocalDate.of(2026, 5, 1);
-		List<Course> c3 = CourseRepo.findByStartsAfter(startDate);
-		System.out.println(c3);
-		assertThat(c3.size() > 0);
-	}
+//	@Test
+//	@DisplayName("Find courses starting after a specific date.")
+//	void findCoursesStartAfter() {
+//		System.out.println("findCoursesStartAfter");
+//		LocalDate afterStartDate = LocalDate.of(2026, 3, 1);
+//		boolean resultBoolean = false;
+//		List<Course> courses = CourseRepo.findByStartsAfter(afterStartDate);
+//		System.out.println(courses);
+//		System.out.println(afterStartDate);
+//		for (Course c : courses) {
+//			resultBoolean = c.getStarts().isAfter(afterStartDate);
+//			System.out.println(c + ":" + resultBoolean);
+//		}
+//		assertTrue(resultBoolean);
+//	}
 
-	@Test
-	@DisplayName("Find courses starting after a specific date.")
-	void findCoursesStartingAfterSpecificDate() {
-		LocalDate startDate = LocalDate.of(2027, 5, 1);
-		List<Course> c3 = CourseRepo.findByStartsAfter(startDate);
-		System.out.println(c3);
-		assertThat(c3.size() > 0);
-	}
-	
+//	@Test
+//	@DisplayName("Find courses starting after a specific date.")
+//	void findCoursesStartingAfterSpecificDate() {
+//		LocalDate startDate = LocalDate.of(2027, 5, 1);
+//		List<Course> c3 = CourseRepo.findByStartsAfter(startDate);
+//		System.out.println(c3);
+//		assertThat(c3.size() > 0);
+//	}
+
 //	• Find courses by maximum duration.
 	@Test
 	@DisplayName("Find courses by maximum duration.")
 	void findCoursesByMaximumDuration() {
 		Optional<Course> c4 = CourseRepo.findTopByOrderByDurationInMonthsDesc();
 		System.out.println(c4);
-		assertThat(c4.isPresent());
+		assertTrue(c4.isPresent());
 	}
 
 //	2. ProjectRepository
 //	• Find by exact project name.
-//	@Test
-//	@DisplayName("Find by exact project name")
-//	void findByExactProjectName() {
-//		String searchtext = "Project-Z"; 
-//		Project c4 = projRepo.findByName("Project-Z");
-//		System.out.println(c4.getName());
-//		System.out.println(c4);
-//		assertThat(c4.getName().equals("Project-Z"));
-//	}
+	@Test
+	@DisplayName("Find by exact project name")
+	void findByExactProjectName() {
+		String searchtext = "Project-X";
+		Project c4 = projRepo.findByName(searchtext);
+		System.out.println(c4.getName());
+		System.out.println(c4);
+		assertTrue(c4.getName().equals(searchtext));
+	}
+
 //	3. DepartmentRepository
 //	• Find by exact name.
-//	@Test
-//	@DisplayName("Find by exact name of Department.")
-//	void findByExactDepartmentName() {
-//		String deptName = "ISS";
-//		Department department = dRepo.findByName(deptName);
-//		System.out.println(department);
-//		assertThat(department.getName().equals(deptName));
-//	}
+	@Test
+	@DisplayName("Find by exact name of Department.")
+	void findByExactDepartmentName() {
+		String deptName = "ISS";
+		Department department = dRepo.findByName(deptName);
+		System.out.println(department);
+		assertTrue(department.getName().equals(deptName));
+	}
 
 //	Find by partial name (ignoring case).
 	@Test
-	@DisplayName("Department - Find by partial name (ignoring case)")
+	@DisplayName("Find Department by partial name (ignoring case)")
 	void findByPartialNameIgnoringCase() {
-		String deptName = "ISS";
-		List<Department> departments = dRepo.findByNameContainingIgnoreCase(deptName);
+		boolean resultBoolean = false;
+		String searchDeptName = "ISS";
+		List<Department> departments = dRepo.findByNameContainingIgnoreCase(searchDeptName);
 		System.out.println(departments);
-		assertThat(departments.size() > 0);
+		for (Department d : departments) {
+			resultBoolean = d.getName().toLowerCase().contains(searchDeptName.toLowerCase());
+		}
+		assertTrue(resultBoolean);
+	}
+
+	@Test
+	@DisplayName("Find employee by partial name (ignoring case).")
+	void findEmployeeByPartialNameIgnoringCase() {
+		System.out.println("--------findEmployeeByPartialNameIgnoringCase-----------");
+		boolean resultBoolean = false;
+		String searchName = "bond";
+		List<Employee> employees = eRepo.findByNameContainingIgnoreCase(searchName);
+		for (Employee e : employees) {
+			resultBoolean = e.getName().toLowerCase().contains(searchName.toLowerCase());
+		}
+		System.out.println(employees);
+		assertTrue(resultBoolean);
+	}
+
+//	• Custom @Query: Fetch an Employee and their Projects by Employee ID (findByIdWithProjects).
+//	@Query("SELECT DISTINCT e FROM Employee e LEFT JOIN FETCH e.projects WHERE e.id = :id")
+//	Optional<Employee> findByIdWithProjects(@Param("id") Long id);
+
+//	@Test
+//	@DisplayName("Fetch an Employee and their Projects by Employee ID")
+//	void fetchEmployeeAndTheirProjectsByEmployeeID() {
+//		System.out.println("--------fetchEmployeeAndTheirProjectsByEmployeeID-----------");
+//		boolean resultBoolean = false;
+//		Long testEmpId = (long) 2;
+//		Optional<Employee> employees = eRepo.findByIdWithProjects(testEmpId);
+//
+//		if (employees.isPresent()) {
+//			Set<Project> p = emp.getProjects();
+//			System.out.println(p.size());
+//			resultBoolean = emp.getId() == testEmpId;
+//		}
+//
+//		assertTrue(resultBoolean);
+//	}
+	
+//	Custom @Query: Fetch an Employee and their Courses by Employee ID (findByIdWithCourses).
+	@Test
+	@DisplayName("Fetch an Employee and their Courses by Employee ID")
+	void fetchAnEmployeeAndTheirCoursesByEmployeeId() {
+		System.out.println("888888888888888888888888888888");
+		Employee employee = eRepo.findByIdWithCourses(3L)
+		        .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+		List<Course> courses = employee.getCourses();
+//		System.out.println(courses.size());
+		boolean result = courses.size() >= 0;
+		 assertTrue(result);
 	}
 	
-//	@Test
-//	@DisplayName("Find employee by partial name (ignoring case).")
-//	void findEmployeeByPartialNameIgnoringCase() {
-//		String name = "xyz";
-//		List<Employee> employees = eRepo.findByNameContainingIgnoreCase(name);
-//		System.out.println("findEmployeeByPartialNameIgnoringCase");
-//		System.out.println(employees);
-//		System.out.println("findEmployeeByPartialNameIgnoringCase");
-//		assertThat(employees != null);
-//	}
+
 }

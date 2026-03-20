@@ -38,4 +38,5 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
 //	• Find projects by an employeeId.
 //	List<Project> findByEmployeeId(Long employeeId);
+	List<Project> findProjectsByEmployees_Id(Long id);
 }

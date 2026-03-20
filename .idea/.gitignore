@@ -1,0 +1,40 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Maven build directory
+/target/
+
+# Gradle build directory (if using Gradle)
+/build/
+.gradle/
+.gradle-tasknamecache
+
+# Compiled classes and packaged archives
+*.class
+*.jar
+*.war
+*.ear
+
+# IDE-specific files and directories (adjust for your IDE)
+.idea/             # IntelliJ IDEA project files
+.metadata/         # Eclipse workspace metadata
+.project           # Eclipse project file
+.classpath         # Eclipse classpath file
+.settings/         # Eclipse settings
+*.iml              # IntelliJ IDEA module files
+.vscode/           # VS Code settings
+
+# OS-specific files
+.DS_Store          # macOS specific
+Thumbs.db          # Windows specific
+
+# Log files and temporary files
+logs/
+*.log
+*.tmp
+*.bak
